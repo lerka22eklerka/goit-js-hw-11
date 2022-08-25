@@ -18,11 +18,11 @@ let searchQuery = '';
 let page = 1;
 let images = [];
 let totalPages = 0;
-
+loadMoreBtn.classList.add('invisible');
 function onSearchQuery(event) {
     event.preventDefault();
     searchQuery = event.target.elements.searchQuery.value;
-    loadMoreBtn.classList.add('visible');
+     loadMoreBtn.classList.remove('invisible');
     // console.log(searchQuery);
     fetchByQuery(searchQuery, page).then(({ data }) => {
         images = data.hits;
@@ -36,13 +36,14 @@ function onSearchQuery(event) {
         }
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
         onRender(images);
-        if (images.length < 40) {
+        if (totalPages === 14) {
           Notiflix.Notify.info(
-                "We're sorry, but you've reached the end of search results."
+            "We're sorry, but you've reached the end of search results."
           );
-            return;
+          loadMoreBtn.classList.add('invisible');
+          return;
         }
-        loadMoreBtn.classList.remove('visible');
+       
     }).catch(error => console.log(error.message));
 }
 
@@ -57,12 +58,20 @@ function onRender(images) {
 loadMoreBtn.addEventListener('click', onLoadMore);
 
 function onLoadMore() {
-    page += 1;
+  try {
+     page += 1;
     fetchByQuery(searchQuery, page).then(({ data }) => {
         images = data.hits;
         totalPages = data.totalHits / 40;
         console.log(images);
     })
     onRender(images);
-
+  } catch (error) {
+    if (error.name === 'AxiosError') {
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      );
+      loadMoreBtn.classList.add('invisible');
+    }
+   }
 }
