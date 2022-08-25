@@ -8,8 +8,9 @@ export default function markUpImg({
   downloads,
 }) {
         return `<div class='photo-card'>
-  <a href='${largeImageURL}'>
-<img src='${webformatURL}' alt='${tags}' title='${tags}' loading='lazy' />
+  <a href='${largeImageURL}' class="photo-card__box">
+<img src='${webformatURL}' alt='${tags}' title='${tags}' loading='lazy' class="gallery-img"/>
+</a>
   <div class='info'>
     <p class='info-item'>
       <b>Likes</b>${likes}
@@ -24,7 +25,7 @@ export default function markUpImg({
       <b>Downloads</b>${downloads}
     </p>
   </div>
-  </a> 
+ 
 </div>`;
       }
 

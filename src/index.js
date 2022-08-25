@@ -22,7 +22,7 @@ loadMoreBtn.classList.add('invisible');
 function onSearchQuery(event) {
     event.preventDefault();
     searchQuery = event.target.elements.searchQuery.value;
-     loadMoreBtn.classList.remove('invisible');
+     
     // console.log(searchQuery);
     fetchByQuery(searchQuery, page).then(({ data }) => {
         images = data.hits;
@@ -31,11 +31,13 @@ function onSearchQuery(event) {
         if (images.length === 0) {
             Notiflix.Notify.failure(
               'Sorry, there are no images matching your search query. Please try again.'
-            );
+          );
+          loadMoreBtn.classList.add('invisible');
             return;
         }
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-        onRender(images);
+      onRender(images);
+      loadMoreBtn.classList.remove('invisible');
         if (totalPages === 14) {
           Notiflix.Notify.info(
             "We're sorry, but you've reached the end of search results."
@@ -57,13 +59,19 @@ function onRender(images) {
 
 loadMoreBtn.addEventListener('click', onLoadMore);
 
-function onLoadMore() {
+async function onLoadMore() {
   try {
      page += 1;
-    fetchByQuery(searchQuery, page).then(({ data }) => {
+   await fetchByQuery(searchQuery, page).then(({ data }) => {
         images = data.hits;
         totalPages = data.totalHits / 40;
-        console.log(images);
+     console.log(images);
+     if (images.length === 0) {
+        Notiflix.Notify.info(
+          "We're sorry, but you've reached the end of search results."
+       );
+       loadMoreBtn.classList.add('invisible');
+     }
     })
     onRender(images);
   } catch (error) {
