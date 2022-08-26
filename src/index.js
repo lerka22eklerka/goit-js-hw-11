@@ -17,7 +17,7 @@ searchForm.addEventListener('submit', onSearchQuery);
 let searchQuery = '';
 let page = 1;
 let images = [];
-let totalPages = 0;
+// let totalPages = 0;
 let lightbox;
 
 loadMoreBtn.classList.add('invisible');
@@ -39,10 +39,9 @@ function onSearchQuery(event) {
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
         galleryRef.innerHTML = '';
         onRender(images);
-       lightbox = new SimpleLightbox('.gallery div a', {
-          captionDelay: 250,
-        });
+    
         loadMoreBtn.classList.remove('invisible');
+        lightbox.refresh();
         }
       
         if (images.length < 40) {
@@ -60,6 +59,7 @@ function onRender(images) {
   
     const gallery = images.map(image => markUpImg(image)).join('');
   galleryRef.insertAdjacentHTML('beforeend', gallery);
+  lightbox = new SimpleLightbox('.gallery div a', { captionDelay: 250 });
   
 }
 
@@ -76,12 +76,10 @@ fetchByQuery(searchQuery, page).then(({ data }) => {
           "We're sorry, but you've reached the end of search results."
        );
        loadMoreBtn.classList.add('invisible');
-     }
+  } 
+   onRender(images); 
+  lightbox.refresh();
 })
-  
-    onRender(images);
-  lightbox = new SimpleLightbox('.gallery div a', { captionDelay: 250 });
-    lightbox.refresh();
      
   } catch (error) {
     if (error.name === 'AxiosError') {
