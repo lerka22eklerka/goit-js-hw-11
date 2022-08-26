@@ -44,7 +44,7 @@ function onSearchQuery(event) {
         
         }
       
-        if (images.length < 40) {
+        if (images.length < 40 && images.length > 0) {
           Notiflix.Notify.info(
             "We're sorry, but you've reached the end of search results."
           );
@@ -71,12 +71,12 @@ function onLoadMore() {
 fetchByQuery(searchQuery, page).then(({ data }) => {
         images = data.hits;
      console.log(images);
-  //    if (images.length === 0) {
-  //       Notiflix.Notify.info(
-  //         "We're sorry, but you've reached the end of search results."
-  //      );
-  //      loadMoreBtn.classList.add('invisible');
-  // } 
+     if (images.length === 0) {
+        Notiflix.Notify.info(
+          "We're sorry, but you've reached the end of search results."
+       );
+       loadMoreBtn.classList.add('invisible');
+  } 
    onRender(images); 
   lightbox.refresh();
 })
