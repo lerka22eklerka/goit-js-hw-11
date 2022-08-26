@@ -35,7 +35,8 @@ function onSearchQuery(event) {
           loadMoreBtn.classList.add('invisible');
             return;
         }
-        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+      Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+      galleryRef.innerHTML = '';
       onRender(images);
       loadMoreBtn.classList.remove('invisible');
         if (totalPages === 14) {
@@ -50,10 +51,10 @@ function onSearchQuery(event) {
 }
 
 function onRender(images) {
+  
     const gallery = images.map(image => markUpImg(image)).join('');
     galleryRef.insertAdjacentHTML('beforeend', gallery);
     var lightbox = new SimpleLightbox('.gallery div a', { captionDelay: 250 });
-    searchForm.innerHTML = '';
 
 }
 
@@ -64,7 +65,7 @@ async function onLoadMore() {
      page += 1;
    await fetchByQuery(searchQuery, page).then(({ data }) => {
         images = data.hits;
-        totalPages = data.totalHits / 40;
+        // totalPages = data.totalHits / 40;
      console.log(images);
      if (images.length === 0) {
         Notiflix.Notify.info(
