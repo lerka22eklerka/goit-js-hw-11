@@ -28,7 +28,7 @@ function onSearchQuery(event) {
         images = data.hits;
         totalPages = data.totalHits / 40;
         console.log(images);
-        if (images.length === 0) {
+        if (images.length === 0 && searchQuery === '') {
             Notiflix.Notify.failure(
               'Sorry, there are no images matching your search query. Please try again.'
           );
