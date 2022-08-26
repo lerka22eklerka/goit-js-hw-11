@@ -29,6 +29,9 @@ body {
   color: #ffffff;
   font-size: 18px;
   cursor: pointer;
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 .load-more:hover {
   background-color: #b5b5b5;
@@ -112,9 +115,9 @@ body {
   text-decoration: none;
   height: 100%;
 }
-.photo-card__box:hover {
+/* .photo-card__box:hover {
   cursor: zoom-in;
-}
+} */
 
 
 .photo-card {
