@@ -24,7 +24,8 @@ loadMoreBtn.classList.add('invisible');
 
 function onSearchQuery(event) {
     event.preventDefault();
-    searchQuery = event.target.elements.searchQuery.value; 
+  searchQuery = event.target.elements.searchQuery.value; 
+  page = 1;
     // console.log(searchQuery);
     fetchByQuery(searchQuery, page).then(({ data }) => {
         images = data.hits;
